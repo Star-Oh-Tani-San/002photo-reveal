@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顔写真の演出</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #photo {
+            width: 300px;
+            height: 300px;
+            background: url('https://saibugassetubikoji.box.com/s/pkfoukjzei9yvx3pd74fqtrh78vy619c') no-repeat center/cover;
+            filter: blur(10px);
+            transition: filter 0.5s ease-in-out;
+            display: inline-block;
+            margin-top: 50px;
+            border-radius: 15px;
+        }
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h2>写真をタップ・シェイク・クリックして見てみよう！</h2>
+    <p>（スマホならタップかシェイク、PCならクリック）</p>
+    <div id="photo"></div>
+
+    <script>
+        function showPhoto() {
+            document.getElementById("photo").style.filter = "blur(0px)";
+        }
+
+        // スマホのタップ処理
+        document.getElementById("photo").addEventListener("click", showPhoto);
+
+        // スマホのシェイク処理
+        let lastX, lastY, lastZ;
+        window.addEventListener("devicemotion", function(event) {
+            let acc = event.accelerationIncludingGravity;
+            if (!lastX) {
+                lastX = acc.x;
+                lastY = acc.y;
+                lastZ = acc.z;
+                return;
+            }
+            let deltaX = Math.abs(lastX - acc.x);
+            let deltaY = Math.abs(lastY - acc.y);
+            let deltaZ = Math.abs(lastZ - acc.z);
+
+            if (deltaX + deltaY + deltaZ > 15) {  // シェイクの強さを調整
+                showPhoto();
+            }
+
+            lastX = acc.x;
+            lastY = acc.y;
+            lastZ = acc.z;
+        });
+
+        // PCのクリック処理
+        if (!("ontouchstart" in window)) {
+            document.getElementById("photo").addEventListener("click", showPhoto);
+        }
+    </script>
+</body>
+</html>
