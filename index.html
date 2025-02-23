@@ -9,15 +9,9 @@
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        #photo {
-            width: 300px;
-            height: 300px;
-            background: url('https://saibugassetubikoji.box.com/s/pkfoukjzei9yvx3pd74fqtrh78vy619c') no-repeat center/cover;
-            filter: blur(10px);
-            transition: filter 0.5s ease-in-out;
-            display: inline-block;
-            margin-top: 50px;
-            border-radius: 15px;
+        #photo-container {
+            display: none; /* 初期状態で非表示 */
+            margin-top: 20px;
         }
         p {
             font-size: 18px;
@@ -27,15 +21,23 @@
 <body>
     <h2>写真をタップ・シェイク・クリックして見てみよう！</h2>
     <p>（スマホならタップかシェイク、PCならクリック）</p>
-    <div id="photo"></div>
+    
+    <button id="showPhotoButton">写真を表示</button>
+
+    <div id="photo-container">
+        <iframe src="https://app.box.com/embed/s/pkfoukjzei9yvx3pd74fqtrh78vy619c?sortColumn=date" 
+                width="500" height="400" frameborder="0" 
+                allowfullscreen webkitallowfullscreen msallowfullscreen>
+        </iframe>
+    </div>
 
     <script>
         function showPhoto() {
-            document.getElementById("photo").style.filter = "blur(0px)";
+            document.getElementById("photo-container").style.display = "block";
         }
 
-        // スマホのタップ処理
-        document.getElementById("photo").addEventListener("click", showPhoto);
+        // PCのクリック処理
+        document.getElementById("showPhotoButton").addEventListener("click", showPhoto);
 
         // スマホのシェイク処理
         let lastX, lastY, lastZ;
@@ -60,10 +62,6 @@
             lastZ = acc.z;
         });
 
-        // PCのクリック処理
-        if (!("ontouchstart" in window)) {
-            document.getElementById("photo").addEventListener("click", showPhoto);
-        }
     </script>
 </body>
 </html>
